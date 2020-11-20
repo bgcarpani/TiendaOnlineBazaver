@@ -1,0 +1,129 @@
+﻿@model Bazaver2.Models.Categoria
+
+@{
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Bazaver Lobos</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/Content/css/styles.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/core.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/theme.css" rel="stylesheet" />
+    @*<link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+    <!-- Custom styles for this template -->
+
+
+</head>
+<body id="page-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:black" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="~/Home/Index"><img src="~/Content/assets/img/bazaverlogo.png" alt="" /></a> @*LOGO*@
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#services">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#portfolio">Fotografía</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#about">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#team">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#contact">Contacto</a></li>
+                </ul>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    if (User.IsInRole("Admin"))
+                    {
+
+                        <ul class="navbar-nav text-uppercase ml-auto">
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Ventas/Index" style="padding-top:23px">Panel</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:document.getElementById('logoutForm').submit()" style="padding-top:23px">Log Off</a></li>
+                        </ul>
+
+                    }
+                }
+
+                @*@Html.Partial("_LoginPartial")*@
+
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background-image:none">
+
+        <div class="container">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                    <div class="row">
+
+                        <div class="col-3"></div>
+                        <div class="col-4">
+
+                            <h4 style="color:black">Categoria</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div>
+                                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "", style = "width:200px" } })
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div style="padding-top:25px">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                                @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-3"></div>
+                    </div>
+
+            }
+
+            <div>
+
+            </div>
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+
+
+        </div>
+    </header>
+
+</body>
+
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright © www.bazaverlobos.com.ar 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="btn btn-dark btn-social mx-2" href="https://www.instagram.com/bazaverlobos/"><i class="fab fa-instagram"></i></a>
+                <a class="mr-3" href="https://www.instagram.com/bazaverlobos/">@@BazaverLobos</a>
+                @*<a class="mr-3" href="#!">Privacy Policy</a>
+                    <a href="#!">Terms of Use</a>*@
+            </div>
+        </div>
+    </div>
+</footer>

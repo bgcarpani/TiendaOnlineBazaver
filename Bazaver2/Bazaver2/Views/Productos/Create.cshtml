@@ -1,0 +1,288 @@
+﻿@model Bazaver2.ViewModel.ProductoViewModel
+
+@{
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Bazaver Lobos</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    @*<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />*@
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/Content/css/styles.css" rel="stylesheet" />
+
+    @*<link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+    <!-- Custom styles for this template -->
+
+
+</head>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:black" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="~/Home/Index"><img src="~/Content/assets/img/bazaverlogo.png" alt="" /></a> @*LOGO*@
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#services">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#portfolio">Fotografía</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#about">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#team">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#contact">Contacto</a></li>
+                </ul>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    if (User.IsInRole("Admin"))
+                    {
+
+                        <ul class="navbar-nav text-uppercase ml-auto">
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Ventas/Index" style="padding-top:23px">Panel</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:document.getElementById('logoutForm').submit()" style="padding-top:23px">Log Off</a></li>
+                        </ul>
+
+                    }
+                }
+
+                @*@Html.Partial("_LoginPartial")*@
+
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background-image:none">
+        <div class="row">
+            <div class="col-2"></div>
+
+            <div class="container; col-8" style="padding-top:20px">
+
+                <div class="col-md-12">
+                    <h1 style="color:black; text-align:center">
+
+                        Productos
+                    </h1>
+
+
+                    @using (Html.BeginForm("Create", "Productos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="">
+                            <h4 style="color:black">Crear nuevo</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @*<div class="row">
+                                    <div>
+                                        @Html.Label("Producto existente: ", htmlAttributes: new { @style = "color:black" })
+                                    </div>
+                                    <div>
+                                        @Html.CheckBox("CheckBox", new {@style="padding-top:3px" })
+                                    </div>
+                                </div>*@
+
+                            <div class="row">
+                                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "col-md-2", style = "color:black" })
+
+                                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+
+                                @Html.Label("Categoría", htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+
+                                @Html.DropDownList("CategoriaId", null, htmlAttributes: new { @class = "" })
+                                @Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })
+                                <div style="padding-left:10px">
+                                    <a class="btn btn-primary rounded-sm addCategoria-modal-btn" data-toggle="modal" href="#addCategoria">
+                                        +
+                                    </a>
+                                </div>
+                                @Html.Label("Color", htmlAttributes: new { @class = "col-md-2", style = "color:black" })
+                                @Html.DropDownList("ColorId", null, htmlAttributes: new { @class = "" })
+                                @Html.ValidationMessageFor(model => model.Colores, "", new { @class = "text-danger" })
+                                @*<div style="padding-left:10px">
+                                    <a class="btn btn-primary rounded-sm addCategoria-modal-btn" data-toggle="modal" href="#addColor">
+                                        +
+                                    </a>
+                                </div>*@
+                            </div>
+
+                            <div class="row" style="padding-top:20px">
+
+                                @Html.Label("Precio Minorista", htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+                                @Html.EditorFor(model => model.PrecioMin, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.PrecioMin, "", new { @class = "text-danger" })
+
+                                @Html.Label("Precio Mayorista", htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+                                @Html.EditorFor(model => model.PrecioMay, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.PrecioMay, "", new { @class = "text-danger" })
+
+                            </div>
+
+                            <div class="row" style="padding-top:20px">
+                                @Html.LabelFor(model => model.Stock, htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+                                @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.Codigo, htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+                                @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "" } })
+                                @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+                            </div>
+                            <div style="padding-top:20px">
+                                @Html.Label("Imagen", htmlAttributes: new { @class = " col-md-2", style = "color:black" })
+                                <span class="btn btn-default btn-file">
+                                    @Html.TextBoxFor(modelo => modelo.ImageFile, new { type = "file" })
+                                </span>
+
+
+                            </div>
+
+                            <div class="row" style="padding-top:50px;padding-left:130px">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                    @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </header>
+</body>
+
+<div class="modal fade add-categoria" id="addCategoria" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container">
+                <div class="modal-body">
+                    <div>
+                        <h4 style="color:black; text-align:center">
+                            Agregar una Categoría
+                        </h4>
+
+                        @using (Html.BeginForm("Create", "Categorias", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="row" style="padding-top:35px;padding-left:65px">
+                                <div style="padding-left:75px">
+                                    Categoría
+                                </div>
+                                <div style="padding-left:10px">
+                                    @Html.EditorFor(model => model.Categoria.Descripcion, new { htmlAttributes = new { @class = "", style = "width:100px" } })
+                                    @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="padding-top:30px;padding-left:150px">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Agregar" class="btn btn-success" />
+                                    @Html.ActionLink("Atrás", "Index", new { }, new { @class = "btn btn-primary" })
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade add-color" id="addColor" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container">
+                <div class="modal-body">
+                    <div>
+                        <h4 style="color:black; text-align:center">
+                            Agregar un Color
+                        </h4>
+
+                        @using (Html.BeginForm("Create", "Colors", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="row" style="padding-top:35px;padding-left:65px">
+                                <div style="padding-left:75px">
+                                    Color
+                                </div>
+                                <div style="padding-left:10px">
+                                    @Html.EditorFor(model => model.Colores.Nombre, new { htmlAttributes = new { @class = "", style = "width:100px" } })
+                                    @Html.ValidationMessageFor(model => model.Colores, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top:30px;padding-left:150px">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Agregar" class="btn btn-success" />
+                                    @Html.ActionLink("Atrás", "Index", new { }, new { @class = "btn btn-primary" })
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright © www.bazaverlobos.com.ar 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="btn btn-dark btn-social mx-2" href="https://www.instagram.com/bazaverlobos/"><i class="fab fa-instagram"></i></a>
+                <a class="mr-3" href="https://www.instagram.com/bazaverlobos/">@@BazaverLobos</a>
+                @*<a class="mr-3" href="#!">Privacy Policy</a>
+                    <a href="#!">Terms of Use</a>*@
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="~/Content/vendor/jquery/jquery.min.js"></script>
+<script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="~/Content/js/scripts.js"></script>

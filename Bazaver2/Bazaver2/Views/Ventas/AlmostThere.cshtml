@@ -1,0 +1,303 @@
+﻿@model  Bazaver2.ViewModel.VentasViewModel
+
+@{
+    Layout = null;
+}
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Bazaver Lobos</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/Images/bazaverfavicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    @*<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />*@
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/Content/css/styles.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/core.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/theme.css" rel="stylesheet" />
+    @*<link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+    <!-- Custom styles for this template -->
+
+
+</head>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:black" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="~/Home/Index"><img src="~/Content/assets/img/bazaverlogo.png" alt="" /></a> @*LOGO*@
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#services">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#portfolio">Fotografía</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#about">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#team">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Home/Index#contact">Contacto</a></li>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Ventas/Index">Panel</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+                        }
+                        else if (User.IsInRole("Mayorista"))
+                        {
+                            <ul class="navbar-nav text-uppercase ml-auto">
+                                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav text-uppercase ml-auto">
+                                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="~/Account/Login">Iniciar Sesión</a></li>
+                            </ul>
+
+                        }
+                    }
+
+                    @*@Html.Partial("_LoginPartial")*@
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background-image:none">
+
+
+        <div class="container">
+            <h2 style="color:black; text-align:left">
+
+                Confirmación de compra
+
+            </h2>
+
+
+
+            @*@using (Html.BeginForm("AlmostThere", "Ventas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()*@
+
+
+            <h4 style="color:gray; text-align:left; padding-top:25px">
+
+                Datos del cliente:
+
+            </h4>
+            <table id="clienteTable" class="table" style="padding-top:25px">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Localidad.Name)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Direccion)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Comentarios)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Telefono)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Correo)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.clienteList)
+                    {
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelitem => item.ApellidoCliente), @Html.DisplayFor(modelitem => item.NombreCliente)
+                                <input type="hidden" name="ApellidoCliente" value="@item.ApellidoCliente" />
+                                <input type="hidden" name="NombreCliente" value="@item.NombreCliente" />
+                            </th>
+
+                            <th>
+                                @Html.DisplayFor(modelitem => item.Localidad.Name)
+                                <input type="hidden" name="LocalidadId" value="@item.LocalidadId" />
+                            </th>
+
+                            <th>
+                                @Html.DisplayFor(modelitem => item.Direccion)
+                                <input type="hidden" name="Direccion" value="@item.Direccion" />
+                            </th>
+
+                            <th>
+                                @Html.DisplayFor(modelitem => item.Comentarios)
+                                <input type="hidden" name="Comentarios" value="@item.Comentarios" />
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelitem => item.Telefono)
+                                <input type="hidden" name="Telefono" value="@item.Telefono" />
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelitem => item.Correo)
+                                <input type="hidden" name="Correo" value="@item.Correo" />
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <h4 style="color:gray; text-align:left; padding-top:25px">
+
+                Carrito:
+
+            </h4>
+            @if (Model.DetallesVentas2.Count > 0)
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            Imagen
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.DetallesVentas2[0].Descripcion)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.DetallesVentas2[0].Color.Nombre)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.DetallesVentas2[0].Precio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DetallesVentas2[0].Cantidad)
+                        </th>
+
+                        @*<th>
+                         @Html.DisplayNameFor(model => model.DetallesVentas2[0].Value)
+                    </th>*@
+
+
+                    </tr>
+
+                    @foreach (var item in Model.DetallesVentas2)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Product.Image))
+                                {
+                                    <img src="@Url.Content(item.Product.Image)" alt="Image" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Color.Nombre)
+                            </td>
+                            <td>
+                                $
+                                @if (User.IsInRole("Mayorista"))
+                                {
+                                    @Html.DisplayFor(modelItem => item.Product.PrecioMay);
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Product.PrecioMin);
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cantidad)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            Total:
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            $
+                            @if (User.IsInRole("Mayorista"))
+                            {
+                                @Html.DisplayFor(model => model.TotalValueMay);
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.TotalValue);
+
+                            }
+                        </td>
+
+                    </tr>
+
+                </table>
+            }
+
+
+
+            @using (Html.BeginForm("AlmostThere", "Ventas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="Fecha" value="@DateTime.Today.ToString("yyyy-MM-dd HH:mm")" />
+                if (Model.clienteList != null && Model.clienteList.Count > 0)
+                {
+                    <input type="hidden" name="NombreCliente" value="@Model.clienteList[0].NombreCliente" />
+                    <input type="hidden" name="ApellidoCliente" value="@Model.clienteList[0].ApellidoCliente" />
+                    <input type="hidden" name="LocalidadId" value="@Model.clienteList[0].LocalidadId" />
+                    <input type="hidden" name="Direccion" value="@Model.clienteList[0].Direccion" />
+                    <input type="hidden" name="Comentarios" value="@Model.clienteList[0].Comentarios" />
+                    <input type="hidden" name="Telefono" value="@Model.clienteList[0].Telefono" />
+                    <input type="hidden" name="Correo" value="@Model.clienteList[0].Correo" />
+                }
+
+                <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
+                        data-preference-id="@Html.DisplayFor(model => model.PreferenciaId)" data-header-color="#fcba03" data-button-label="Finalizar" data-elements-color="#fcba03">
+                </script>
+                @Html.ActionLink("Atrás", "Create", new { }, new { @class = "btn btn-primary" })
+
+            }
+        </div>
+
+
+        </div>
+    </header>
+
+</body>
+
+
+<footer class="footer py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-lg-left">Copyright © www.bazaverlobos.com.ar 2020</div>
+            <div class="col-lg-4 my-3 my-lg-0">
+
+            </div>
+            <div class="col-lg-4 text-lg-right">
+                <a class="btn btn-dark btn-social mx-2" href="https://www.instagram.com/bazaverlobos/"><i class="fab fa-instagram"></i></a>
+                <a class="mr-3" href="https://www.instagram.com/bazaverlobos/">@@BazaverLobos</a>
+                @*<a class="mr-3" href="#!">Privacy Policy</a>
+                    <a href="#!">Terms of Use</a>*@
+            </div>
+        </div>
+    </div>
+</footer>
+
